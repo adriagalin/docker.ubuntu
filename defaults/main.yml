@@ -25,6 +25,8 @@ docker_opts: ""
 # SECURITY WARNING: 
 # Be aware that granted users can easily get full root access on the docker host system!
 docker_group_members: []
+# Set to 'yes' or 'true' to enable install docker tools
+docker_install_tools: no
 # Versions for the python packages that are installed installed
 pip_version_pip: latest
 pip_version_setuptools: latest

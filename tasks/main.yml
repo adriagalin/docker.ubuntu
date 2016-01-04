@@ -46,12 +46,12 @@
   when: docker_opts != "" and ansible_distribution_version|version_compare(15.04, '<')
 
 - name: Create systemd configuration directory for Docker service (systemd)
-  file: 
-    dest: /etc/systemd/system/docker.service.d 
+  file:
+    dest: /etc/systemd/system/docker.service.d
     state: directory
     owner: root
     group: root
-    mode: 0755 
+    mode: 0755
   when: docker_opts != "" and ansible_distribution_version|version_compare(15.04, '>=')
 
 - name: Set docker daemon options (systemd)
@@ -104,6 +104,7 @@
   with_items:
     - python-dev
     - python-pip
+  when: docker_install_tools
 
 # Upgrade pip with pip to fix angstwad/docker.ubuntu/pull/35 and docker-py/issues/525
 # Install latest version when no specific release is set.
@@ -116,7 +117,7 @@
     - { name: setuptools, version: "{{ pip_version_setuptools }}" }
     - { name: docker-py, version: "{{ pip_version_docker_py }}" }
     - { name: docker-compose, version: "{{ pip_version_docker_compose }}" }
-  when: item.version=="latest"
+  when: docker_install_tools and item.version=="latest"
   ignore_errors: yes
 
 # Install specific version when set in the variables
@@ -130,7 +131,7 @@
     - { name: setuptools, version: "{{ pip_version_setuptools }}" }
     - { name: docker-py, version: "{{ pip_version_docker_py }}" }
     - { name: docker-compose, version: "{{ pip_version_docker_compose }}" }
-  when: item.version!="latest"
+  when: docker_install_tools and item.version!="latest"
 
 - name: Check if /etc/updatedb.conf exists
   stat:
